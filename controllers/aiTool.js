@@ -8,7 +8,15 @@ const getTools = async (req, res, next) => {
     const [data, totalData] = await Promise.all([
       userQuery
         .filter()
-        .search(["title", "toolFeature"]) // to make dynamic search use like ['']
+        .search([
+          "title",
+          "toolDescription",
+          "shortDescription",
+          "toolFeature",
+          "toolTags",
+          "category",
+          "subcategories",
+        ])
         .sort()
         .paginate()
         .fields().modelQuery,
