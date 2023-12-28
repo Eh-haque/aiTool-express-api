@@ -3,6 +3,7 @@ import cors from "cors";
 import { env } from "./config/env.js";
 import connectDatabase from "./config/database.js";
 import router from "./routes/index.js";
+import mongoose from "mongoose";
 
 const app = express();
 
@@ -13,6 +14,19 @@ app.use(express.urlencoded({ extended: false }));
 connectDatabase();
 
 app.use("/api", router);
+
+const errorHandler = (err, req, res, next) => {
+  const errStatus = err.statusCode || 500;
+  const errMsg = err.message || "Something went wrong";
+  res.status(errStatus).json({
+    success: false,
+    message: errMsg,
+    data: err,
+    stack: process.env.NODE_ENV === "development" ? err.stack : {},
+  });
+};
+
+app.use(errorHandler);
 
 app.listen(env.port, () => {
   console.log(`Listening on port ${env.port}`);

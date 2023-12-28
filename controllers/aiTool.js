@@ -33,7 +33,76 @@ const getTools = async (req, res, next) => {
 
     res.status(200).send({
       success: true,
+      message: "Tools getting successfully",
       meta,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTool = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!id) throw new Error("Invalid ID");
+
+    const data = await AITool.findById(id);
+
+    res.status(200).send({
+      success: true,
+      message: "Tool getting successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createTool = async (req, res, next) => {
+  try {
+    const data = await AITool.create(req.body);
+
+    res.status(200).send({
+      success: true,
+      message: "Tool created successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateTool = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!id) throw new Error("Invalid ID");
+
+    const data = await AITool.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).send({
+      success: true,
+      message: "Tool updated successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteTool = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!id) throw new Error("Invalid ID");
+
+    const data = await AITool.findByIdAndDelete(id);
+
+    res.status(200).send({
+      success: true,
+      message: "Tool deleted successfully",
       data,
     });
   } catch (error) {
@@ -43,4 +112,8 @@ const getTools = async (req, res, next) => {
 
 export const aiTool = {
   getTools,
+  getTool,
+  createTool,
+  updateTool,
+  deleteTool,
 };
