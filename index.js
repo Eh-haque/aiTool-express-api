@@ -27,8 +27,6 @@ const errorHandler = (err, req, res, next) => {
 
 app.use(errorHandler);
 
-// check
-
 app.listen(env.port, () => {
   console.log(`Listening on port ${env.port}`);
 });
