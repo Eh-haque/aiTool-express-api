@@ -1,7 +1,9 @@
 import { Router } from "express";
-import aiToolRouter from "./aiTool.js";
+import moduleRouter from "./module.js";
+import quizRouter from "./quiz.js";
 const router = Router();
 
-router.use("/ai_tool", aiToolRouter);
+router.use("/module", moduleRouter);
+router.use("/quiz", quizRouter);
 
 export default router;

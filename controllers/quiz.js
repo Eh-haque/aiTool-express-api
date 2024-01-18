@@ -1,26 +1,18 @@
-import AITool from "../models/AITool.js";
 import QueryBuilder from "mongoose-dynamic-querybuilder";
+import Quiz from "../models/Quiz.js";
 
-const getTools = async (req, res, next) => {
+const getQuizzes = async (req, res, next) => {
   try {
-    const userQuery = new QueryBuilder(AITool.find({}), req.query);
+    const quizQuery = new QueryBuilder(Quiz.find({}), req.query);
 
     const [data, totalData] = await Promise.all([
-      userQuery
+      quizQuery
         .filter()
-        .search([
-          "title",
-          "toolDescription",
-          "shortDescription",
-          "toolFeature",
-          "toolTags",
-          "category",
-          "subcategories",
-        ])
+        .search(["module", "question", "description", "options", "answer"])
         .sort()
         .paginate()
         .fields().modelQuery,
-      userQuery.countTotal(),
+      quizQuery.countTotal(),
     ]);
 
     const limit = Number(req.query.limit) || 10;
@@ -33,7 +25,7 @@ const getTools = async (req, res, next) => {
 
     res.status(200).send({
       success: true,
-      message: "Tools getting successfully",
+      message: "Quizzes getting successfully",
       meta,
       data,
     });
@@ -42,16 +34,16 @@ const getTools = async (req, res, next) => {
   }
 };
 
-const getTool = async (req, res, next) => {
+const getQuiz = async (req, res, next) => {
   try {
     const id = req.params.id;
     if (!id) throw new Error("Invalid ID");
 
-    const data = await AITool.findById(id);
+    const data = await Quiz.findById(id);
 
     res.status(200).send({
       success: true,
-      message: "Tool getting successfully",
+      message: "Quiz getting successfully",
       data,
     });
   } catch (error) {
@@ -59,13 +51,13 @@ const getTool = async (req, res, next) => {
   }
 };
 
-const createTool = async (req, res, next) => {
+const createQuiz = async (req, res, next) => {
   try {
-    const data = await AITool.create(req.body);
+    const data = await Quiz.create(req.body);
 
     res.status(200).send({
       success: true,
-      message: "Tool created successfully",
+      message: "Quiz created successfully",
       data,
     });
   } catch (error) {
@@ -73,19 +65,19 @@ const createTool = async (req, res, next) => {
   }
 };
 
-const updateTool = async (req, res, next) => {
+const updateQuiz = async (req, res, next) => {
   try {
     const id = req.params.id;
     if (!id) throw new Error("Invalid ID");
 
-    const data = await AITool.findByIdAndUpdate(id, req.body, {
+    const data = await Quiz.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
 
     res.status(200).send({
       success: true,
-      message: "Tool updated successfully",
+      message: "Quiz updated successfully",
       data,
     });
   } catch (error) {
@@ -93,16 +85,16 @@ const updateTool = async (req, res, next) => {
   }
 };
 
-const deleteTool = async (req, res, next) => {
+const deleteQuiz = async (req, res, next) => {
   try {
     const id = req.params.id;
     if (!id) throw new Error("Invalid ID");
 
-    const data = await AITool.findByIdAndDelete(id);
+    const data = await Quiz.findByIdAndDelete(id);
 
     res.status(200).send({
       success: true,
-      message: "Tool deleted successfully",
+      message: "Quiz deleted successfully",
       data,
     });
   } catch (error) {
@@ -110,10 +102,10 @@ const deleteTool = async (req, res, next) => {
   }
 };
 
-export const aiTool = {
-  getTools,
-  getTool,
-  createTool,
-  updateTool,
-  deleteTool,
+export const quiz = {
+  getQuizzes,
+  getQuiz,
+  createQuiz,
+  updateQuiz,
+  deleteQuiz,
 };

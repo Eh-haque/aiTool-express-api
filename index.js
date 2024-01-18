@@ -3,7 +3,6 @@ import cors from "cors";
 import { env } from "./config/env.js";
 import connectDatabase from "./config/database.js";
 import router from "./routes/index.js";
-import mongoose from "mongoose";
 
 const app = express();
 
