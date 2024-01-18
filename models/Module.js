@@ -5,6 +5,7 @@ const moduleSchema = new Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
     },
     status: {
